@@ -4,7 +4,7 @@ var getCityCoords = function(city) {
     fetch("http://api.openweathermap.org/geo/1.0/direct?q=" + city + "&appid=" + api_key).then(function(response) {
         if(response.ok) {
             response.json().then(function(data) {
-                getWeather(data[0]["lat"], data[0]["lon"]);
+                getWeather(data[0]["lat"], data[0]["lon"], city);
             });
         }
         else {
@@ -15,11 +15,11 @@ var getCityCoords = function(city) {
     });
 };
 
-var getWeather = function(lat, lon) {
-    fetch("https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&appid=" + api_key).then(function(response) {
+var getWeather = function(lat, lon, city) {
+    fetch("https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&units=imperial&appid=" + api_key).then(function(response) {
         if(response.ok) {
             response.json().then(function(data) {
-                updateToday(data["daily"][0]);
+                updateToday(data["current"], city);
             });
         }
         else {
@@ -30,8 +30,24 @@ var getWeather = function(lat, lon) {
     });
 };
 
-var updateToday = function(data) {
+var updateToday = function(data, city) {
     console.log(data);
+    $("#city").text(city + " (" + moment().format("MM/DD/YYYY") + ")");
+    $("#temp").text(data["temp"]);
+    $("#wind").text(data["wind_speed"]);
+    $("#humidity").text(data["humidity"]);
+
+    var uv = data["uvi"];
+    $("uv").text(uv);
+    if(uv < 3) {
+        $("uv").addClass("bg-success text-white")
+    }
+    else if(uv < 6) {
+        $("uv").addClass("bg-warning")
+    }
+    else {
+        $("uv").addClass("bg-danger")
+    }
 };
 
 var updateCards = function(data) {

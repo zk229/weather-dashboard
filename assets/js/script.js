@@ -4,7 +4,7 @@ var history = [];
 // use Geolocation API to get accurate coordinates for chosen city
 var getCityCoords = function(city) {
 
-    fetch("http://api.openweathermap.org/geo/1.0/direct?q=" + city + "&appid=" + api_key).then(function(response) {
+    fetch("https://api.openweathermap.org/geo/1.0/direct?q=" + city + "&appid=" + api_key).then(function(response) {
         if(response.ok) {
             response.json().then(function(data) {
                 localStorage.setItem("city", city);

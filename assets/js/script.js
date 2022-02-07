@@ -38,18 +38,25 @@ var updateToday = function(data, city) {
     $("#humidity").text(data["humidity"]);
 
     var uv = data["uvi"];
-    $("uv").text(uv);
+    $("#uv").text(uv);
+    console.log(uv);
     if(uv < 3) {
-        $("uv").addClass("bg-success text-white")
+        $("#uv").addClass("bg-success text-white");
     }
     else if(uv < 6) {
-        $("uv").addClass("bg-warning")
+        $("#uv").addClass("bg-warning");
     }
     else {
-        $("uv").addClass("bg-danger")
+        $("#uv").addClass("bg-danger text-white");
     }
 };
 
 var updateCards = function(data) {
 
 };
+
+var searchCity = function(event) {
+    getCityCoords($("#search").val());
+};
+
+$("#submit").click(searchCity);

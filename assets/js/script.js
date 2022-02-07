@@ -3,14 +3,18 @@ var history = [];
 
 // use Geolocation API to get accurate coordinates for chosen city
 var getCityCoords = function(city) {
+
     fetch("http://api.openweathermap.org/geo/1.0/direct?q=" + city + "&appid=" + api_key).then(function(response) {
         if(response.ok) {
             response.json().then(function(data) {
+                localStorage.setItem("city", city);
+                addHistory(city);
                 getWeather(data[0]["lat"], data[0]["lon"], city);
             });
         }
         else {
             alert("Invalid city");
+            console.log(city);
         }
     }).catch(function(error) {
         alert("Unable to reach Open Weather API.");
@@ -60,6 +64,7 @@ var updateToday = function(data, city) {
 // create the cards for the 5 day forecast
 var updateCards = function(data) {
     console.log(data);
+    $("#five-day").empty();
     for(var i = 1; i <= 5; i++) {
         var currentWeather = data[i];
 
@@ -92,9 +97,33 @@ var updateCards = function(data) {
 
 // event handler for search button
 var searchCity = function(event) {
-    $("#five-day").empty();
     getCityCoords($("#search").val());
     $("#search").val("");
 };
 
+// load previous session data
+var loadCity = function() {
+    var prev = localStorage.getItem("city");
+    if(!prev) {
+        return;
+    }
+    getCityCoords(prev);
+};
+
+// add a button to the history for a city
+var addHistory = function(city) {
+    var btnEl = $("<btn></btn>");
+    btnEl.text(city);
+    btnEl.addClass("btn btn-block btn-light mx-1 justify-content-center")
+    btnEl.click(loadHistory);
+
+    $("#left-col").append(btnEl);
+};
+
+// event handler for city buttons
+var loadHistory = function(event) {
+    getCityCoords($(this).text());
+}
+
+loadCity();
 $("#submit").click(searchCity);

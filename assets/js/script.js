@@ -58,7 +58,7 @@ var updateToday = function(data, city) {
         $("#uv").addClass("bg-danger text-white");
     }
 
-    $("#today-icon").attr("src", "http://openweathermap.org/img/wn/" + data["weather"][0]["icon"] + "@2x.png");
+    $("#today-icon").attr("src", "https://openweathermap.org/img/wn/" + data["weather"][0]["icon"] + "@2x.png");
 };
 
 // create the cards for the 5 day forecast
@@ -74,7 +74,7 @@ var updateCards = function(data) {
         var titleEl = $("<h5></h5>").text(moment().add(i, "days").format("MM/DD/YYYY"));
 
         var imgEl = $("<img></img>");
-        imgEl.attr("src", "http://openweathermap.org/img/wn/" + currentWeather["weather"][0]["icon"] + "@2x.png");
+        imgEl.attr("src", "https://openweathermap.org/img/wn/" + currentWeather["weather"][0]["icon"] + "@2x.png");
         imgEl.attr("height", "30px");
 
         var tempEl = $("<p></p>");
